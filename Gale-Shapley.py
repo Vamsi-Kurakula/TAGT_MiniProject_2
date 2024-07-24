@@ -190,7 +190,7 @@ def distribution_proposals_for_n():
 
 
     # Create plot for summary stats
-    summary_stats_df.plot.hist(column=["num_proposals"], by="n", bins = 5)
+    summary_stats_df.plot.hist(column=["num_proposals"], by="n", bins = 10)
 
     # Add title and labels
     plt.title(f'Distribution of Proposals for n = {NUM_PAIRS}')
