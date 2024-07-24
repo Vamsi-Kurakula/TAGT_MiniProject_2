@@ -15,14 +15,13 @@ class Indivdual():
     Generates a preference list for a indivdual
     '''
 
-    def __init__(self, name, n):
+    def __init__(self, name, n, rankings):
         '''
         n: Number of the 'other' party to create rankings for 
         '''
 
         self.name = name
-        self.my_rankings = list(range(n))
-        random.shuffle(self.my_rankings)
+        self.my_rankings = rankings
         self.current_choice_idx = 0
         self.current_match = -1
 
@@ -39,7 +38,11 @@ class Indivdual():
             if label == candidate:
                 return idx + 1
                 
-            
+def generate_ranking_list(n):
+    my_rankings = list(range(n))
+    random.shuffle(my_rankings)
+
+    return my_rankings
 
 def generate_doctors_hospitals(n):
     '''
@@ -49,8 +52,11 @@ def generate_doctors_hospitals(n):
     hospital_list = []
 
     for i in range(n):
-        doctor_list.append(Indivdual(i, n))
-        hospital_list.append(Indivdual(i, n))
+        doc_rank = generate_ranking_list(n)
+        doctor_list.append(Indivdual(i, n, doc_rank))
+
+        hos_rank = generate_ranking_list(n)
+        hospital_list.append(Indivdual(i, n, hos_rank))
 
     return doctor_list, hospital_list
 
