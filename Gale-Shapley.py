@@ -47,10 +47,13 @@ def generate_distinct_numbers(n):
     '''
 
     start = 1
-    end = n**2
+    end = n**3
     
     # Generate n distinct random numbers between start and end
     random_numbers = random.sample(range(start, end + 1), n)
+    
+    # Uncomment the below line to do standard gale-shapley
+    #random_numbers = np.ones(n)
 
     return random_numbers
             
