@@ -6,6 +6,7 @@ All Code that relates to Mini Project 2
 
 import random
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 class Indivdual():
@@ -37,13 +38,22 @@ class Indivdual():
         for idx, label in enumerate(self.my_rankings):
             if label == candidate:
                 return idx + 1
-                
-def generate_ranking_list(n):
-    my_rankings = list(range(n))
-    random.shuffle(my_rankings)
+            
+def generate_distinct_numbers(n):
+    '''
+    Generates a list of increasing numbers.
 
-    return my_rankings
+    Adjust this function to see how different personal rankings effect the algortithm 
+    '''
 
+    start = 1
+    end = n**2
+    
+    # Generate n distinct random numbers between start and end
+    random_numbers = random.sample(range(start, end + 1), n)
+
+    return random_numbers
+            
 def generate_doctors_hospitals(n):
     '''
     Setting up doctors and hospitals 
@@ -51,12 +61,20 @@ def generate_doctors_hospitals(n):
     doctor_list = []
     hospital_list = []
 
-    for i in range(n):
-        doc_rank = generate_ranking_list(n)
-        doctor_list.append(Indivdual(i, n, doc_rank))
+    popularity_ranks = generate_distinct_numbers(n)
 
-        hos_rank = generate_ranking_list(n)
-        hospital_list.append(Indivdual(i, n, hos_rank))
+    doctor_pop_rankings = popularity_ranks.copy()
+    random.shuffle(doctor_pop_rankings)
+    hospital_pop_rankings = popularity_ranks.copy()
+    random.shuffle(hospital_pop_rankings)
+
+    for i in range(n):
+
+        doc_rankings = np.random.choice(range(n), replace=False, size= n, p = [x/sum(doctor_pop_rankings) for x in doctor_pop_rankings])
+        hos_rankings = np.random.choice(range(n), replace=False, size= n, p = [x/sum(hospital_pop_rankings) for x in hospital_pop_rankings])
+
+        doctor_list.append(Indivdual(i, n, doc_rankings))
+        hospital_list.append(Indivdual(i, n, hos_rankings))
 
     return doctor_list, hospital_list
 
@@ -235,3 +253,13 @@ def distribution_proposals_for_n():
 if __name__ == '__main__':
     avg_num_proposals_by_n()
     distribution_proposals_for_n()
+
+    #popularity_ranks = generate_distinct_numbers(20)
+    #doctor_pop_rankings = popularity_ranks.copy()
+    #random.shuffle(doctor_pop_rankings)
+#
+    #print(doctor_pop_rankings)
+    #for i in range(20):
+    #    doc_rankings = np.random.choice(range(20), replace=False, size= 20, p = [x/sum(doctor_pop_rankings) for x in doctor_pop_rankings])
+    #    print(doc_rankings)
+
